@@ -1,7 +1,7 @@
 <template>
 	<div :class="{'v-responsive v-image':!error,'v-responsive':error}">
-		<v-img v-if="!error" :src="src" v-bind="$attrs"></v-img>
-		<v-icon v-if="error" v-bind="$attrs" style="margin:auto;">{{icon}}</v-icon>
+		<v-img v-show="!error" :src="src" v-bind="$attrs" :error="onError" :load="onLoad"></v-img>
+		<v-icon v-show="error" v-bind="$attrs" style="margin:auto;">{{icon}}</v-icon>
 	</div>	
 </template>	
 
@@ -13,8 +13,8 @@
 			error: true
 		}),
 		methods:{
-			onError(){
-				// console.log("ERROR", this.src)
+			onError(e){
+				// console.log("ERROR", JSON.stringify(this.src), e)
 				this.error = true
 			},
 			onLoad(){
@@ -24,12 +24,12 @@
 		},
 		watch:{
 			src(newValue){
-				this.error = true
-				let img = new Image()
+				// this.error = true
+				// let img = new Image()
 				
-				img.onerror = this.onError
-				img.onload = this.onLoad
-				img.src = newValue
+				// img.onerror = this.onError
+				// img.onload = this.onLoad
+				// img.src = newValue
 			}
 		},
 

@@ -20,12 +20,12 @@
 				@change="inputData"
 			>
 				<template v-slot:label>
-					<v-div
+					<div
 						:class="(options.decoration) ? getPropertyValue(options.decoration.labelClass) : ''"
 						:style="(options.decoration) ? getPropertyValue(options.decoration.labelStyle) : ''"
 					>
 						{{ (options.data) ? getPropertyValue(variant) : '' }}
-					</v-div>
+					</div>
 				</template>	
 			</v-checkbox>
 
