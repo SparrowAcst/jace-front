@@ -7,10 +7,10 @@
 	      v-model="model"
 	      :color="(options.decoration) ? getPropertyValue(options.decoration.color) : ''"
 	      :background-color="(options.decoration) ? getPropertyValue(options.decoration.backgroundColor) : ''"
-	      :indeterminate="(options.decoration) ? getPropertyValue(options.decoration.indeterminate) : ''"
-		  :stream="(options.decoration) ? getPropertyValue(options.decoration.stream) : ''"
-	      :reverse="(options.decoration) ? getPropertyValue(options.decoration.reverse) : ''"
-	      :rounded="(options.decoration) ? getPropertyValue(options.decoration.rounded) : ''"
+	      :indeterminate="(options.decoration) ? getPropertyValue(options.decoration.indeterminate) : false"
+		  :stream="(options.decoration) ? getPropertyValue(options.decoration.stream) : false"
+	      :reverse="(options.decoration) ? getPropertyValue(options.decoration.reverse) : false"
+	      :rounded="(options.decoration) ? getPropertyValue(options.decoration.rounded) : false"
 	      :height="(options.decoration) ? getPropertyValue(options.decoration.height) : ''"
 	    >
 	      <template v-if="(options.decoration) ? getPropertyValue(options.decoration.showValue) : false" v-slot:default="{ value }">

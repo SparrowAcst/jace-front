@@ -30,6 +30,7 @@ export default {
     "ratesInput":  () => import("./rates.vue"),
     "tabsInput":  () => import("./tabs.vue"),
     "navbarButtonInput": () => import("./navbar-button.vue"),
+    "progressInput":  () => import("./progress.vue"),
     
              
 }
