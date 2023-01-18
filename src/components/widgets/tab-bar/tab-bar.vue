@@ -1,5 +1,6 @@
 <template>
   <v-tabs
+      v-if="options"
       v-model="tab"
       background-color="transparent"
       :color="options.decoration.color"

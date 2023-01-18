@@ -49,7 +49,7 @@
       <v-btn v-show="!isActive" icon class="mx-3" style="color: #aeaeae !important;">
       </v-btn>
       </div> -->  
-      <div class="d-flex justify-center">
+      <div class="d-flex justify-end">
       <component  
         v-if="config.type" 
         v-show="!hasError && !hidden"

@@ -9,6 +9,21 @@
 		RESPONSE
 		{{JSON.stringify(response)}} -->
 		
+		<div 
+			class="d-flex justify-end" 
+			v-if="options && getPropertyValue"
+			style="    z-index: 200 !important; position: sticky; height:0px"
+		>
+			<v-btn 
+				icon
+				dense
+				x-small 
+				@click.stop="clearResponse" 
+			>
+	              <v-icon>mdi-close</v-icon>
+	        </v-btn>
+        </div>
+
 		<v-radio-group 
 			v-if = "options && options.data" 
 			hide-details
@@ -21,6 +36,7 @@
 			:row = "(options.decoration) ? getPropertyValue(options.decoration.row) : false"
 			:messages ="(options.decoration) ? getPropertyValue(options.decoration.messages) : []"
 			@change = "inputData"
+			style=""
 		>
 	      <!-- <template v-slot:label>
 	        <div 
@@ -72,9 +88,19 @@ export default {
 		}
 	},
 	
+
 	methods:{
 		inputData(data){
+			this.$nextTick(()=> {
+				this.$forceUpdate()
+			})
 			this.$emit("change", this, data)
+		},
+		clearResponse(){
+			this.$nextTick(() => {
+				this.response = ""
+				this.inputData( (this.response) ? this.response : undefined )	
+			})
 		}
 	},
 

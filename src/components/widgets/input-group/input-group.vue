@@ -99,7 +99,9 @@ export default {
         // console.log("EMIT",sender.options.data.event || "input-data")
         let event = sender.options.data.event || "input-data"
         this.emit(event, sender, data)
-
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
       }   
     },
 

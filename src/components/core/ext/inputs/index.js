@@ -31,6 +31,7 @@ export default {
     "tabsInput":  () => import("./tabs.vue"),
     "navbarButtonInput": () => import("./navbar-button.vue"),
     "progressInput":  () => import("./progress.vue"),
+    "iconButtonInput":  () => import("./icon-button.vue"),
     
              
 }
