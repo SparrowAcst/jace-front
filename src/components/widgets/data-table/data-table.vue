@@ -1,5 +1,8 @@
 <template>
-    <div v-if="options">
+    <div 
+      v-if="options"
+      :class="(options.decoration) ? getPropertyValue(options.decoration.classes) : ''" 
+    >
     <v-data-table
       v-if = "headers"
       v-model = "selected"
@@ -11,7 +14,6 @@
       :headers="headers"
       :items="items"
       :style="(options.decoration) ? getPropertyValue(options.decoration.style) : ''"
-      :class="(options.decoration) ? getPropertyValue(options.decoration.classes) : ''" 
       :dense = "(options.decoration) ? getPropertyValue(options.decoration.dense) : false"
       hide-default-footer
     >
@@ -19,10 +21,10 @@
 
       <template v-for="(col, index) in headers" v-slot:[`item.${col.value}`]="{ item }" >
      
-        <div v-if = "item[col.value].html" v-html="getPropertyValue(item[col.value].html)"></div>
+        <div v-if = "item[col.value] && item[col.value].html" v-html="getPropertyValue(item[col.value].html)"></div>
         
         <!-- <div v-if = "item[col.value].component"> -->
-          <component v-if=" item[col.value].component && components[`${item[col.value].component.type}Input`]" 
+          <component v-if="item[col.value] && item[col.value].component && components[`${item[col.value].component.type}Input`]" 
             :class="(item[col.value].component.decoration) ? getPropertyValue(item[col.value].component.decoration.classes) : ''" 
             :style="(item[col.value].component.decoration) ? getPropertyValue(item[col.value].component.decoration.style) : ''"
             :is="`${item[col.value].component.type}Input`" 
@@ -36,7 +38,7 @@
           ></component>
         <!-- </div> -->
 
-        <div v-if = "!item[col.value].html && !item[col.value].component" class="caption"> {{ getPropertyValue(item[col.value]) }} </div>
+        <div v-if = "item[col.value] && !item[col.value].html && !item[col.value].component" class="caption"> {{ getPropertyValue(item[col.value]) }} </div>
      
       </template>
       

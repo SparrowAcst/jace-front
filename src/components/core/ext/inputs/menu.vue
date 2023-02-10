@@ -2,7 +2,20 @@
 	<div v-if="options && getPropertyValue">
 		<v-menu offset-y close-on-click>
 	        <template v-slot:activator="{ on, attrs }">
-	          <v-btn    
+	          <v-btn v-if="(options.decoration) ? getPropertyValue(options.decoration.iconOnly) : false"
+				icon 
+				v-bind="attrs"
+	            v-on="on"
+	            transition="slide-x-transition"
+				:disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 
+			    :color="(options.decoration) ? getPropertyValue(options.decoration.color) : ''"
+			>
+		              <v-icon
+		              	:color="(options.decoration) ? getPropertyValue(options.decoration.color) : ''"
+		              >{{(options.decoration) ? getPropertyValue(options.decoration.icon) : 'mdi-chevron-left-circle-outline'}}</v-icon>
+		    </v-btn>	
+	        <v-btn    
+	            v-else
 	            v-bind="attrs"
 	            v-on="on"
 	            :disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 

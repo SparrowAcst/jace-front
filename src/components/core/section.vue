@@ -89,7 +89,7 @@
       </v-layout>
     </v-layout>
     
-    <v-layout v-else column xs12 mb-3 py-0 v-show="showed">
+    <v-layout v-else column xs12 mb-0 py-0 v-show="showed">
       <v-layout row wrap :class="config.align" fill-height class="px-2 py-0">
         <v-flex v-for="(h, hIndex) in config.holders" :key="hIndex" :class="`md${h.width} xs12`" pa-0>
           <dj-holder :name="h.name" @init="onInitChild"></dj-holder>

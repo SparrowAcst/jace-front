@@ -25,8 +25,7 @@
                   @push-ref="pushRef"
                   @push-menu="pushMenu"
                   @change="inputData"
-                  @select="selectItem({row:rowIndex,col:colIndex})"
-
+               
                 ></component>
 
                 <span v-else>&nbsp;</span>        
@@ -65,23 +64,63 @@ export default {
 
   methods: {
 
-    inputData(sender, data){
+    // inputData(sender, data){
+    //   if(
+    //     !isUndefined(sender.options) 
+    //     && !isUndefined(sender.options.data) 
+    //     && !isUndefined(sender.options.data.value)
+    //   ) {
+    //     if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
+    //       set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
+    //     } else {
+    //       sender.options.data.value = data
+    //     }
+    //   }
+
+    //   let event = sender.options.data.event || "input-data"
+    //     this.emit(event, sender, data)
+   
+    // },
+
+   inputData(sender, data){
+      console.log("IG Input data",sender,data)
       if(
         !isUndefined(sender.options) 
         && !isUndefined(sender.options.data) 
         && !isUndefined(sender.options.data.value)
       ) {
+        
+        console.log(">>>>>>>>>", sender.options.data.value)
+
         if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
+          // console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
           set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
         } else {
-          sender.options.data.value = data
-        }
-      }
+          if((/^\$\{.+\}$/gi).test(sender.options.data.value)) {
+        
+            let f = sender.options.data.value
+                      .replace("${","")
+                      .replace(/}$/gim,"")
+                      .replace(/this\./gim,"")
+                    
 
-      let event = sender.options.data.event || "input-data"
+            console.log(JSON.stringify(f))
+            set( this, f , data )
+
+          } else {
+            sender.options.data.value = data
+          }
+        }  
+        
+        // console.log("EMIT",sender.options.data.event || "input-data")
+        let event = sender.options.data.event || "input-data"
         this.emit(event, sender, data)
-   
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
+      }   
     },
+ 
 
   setData(data){
     this.data = data
@@ -170,6 +209,7 @@ export default {
 
     },
   
+
     applyContext(data){
       if(isObject(data)){
         keys(data).forEach( key => {
