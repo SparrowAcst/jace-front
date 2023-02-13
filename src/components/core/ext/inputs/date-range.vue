@@ -16,7 +16,7 @@
 	              	:value = "displayedValue"
 					:label="(options.data) ? getPropertyValue(options.data.label) : ''" 
 					:disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 
-					:readonly="true" 
+					:readonly="false" 
 					
 					:required="(options.data) ? getPropertyValue(options.data.required) : false"  
 					:clearable="(options.data) ? getPropertyValue(options.data.clearable) : false"
@@ -31,6 +31,7 @@
 	              	prepend-icon="event" 
 	              	v-bind="attrs"
             		v-on="on"
+            		@change="changeView"
 	        	
             	></v-text-field>
             </template>
@@ -64,20 +65,48 @@ export default {
 	}),
 
 	computed:{
-		displayedValue() {
-			let res = (this.value) ? this.value.join(" ~ ") : null
-			res = (res) ? res : null
-	      	return res
-		}	
+
+		displayedValue:{
+			
+			get(){
+				if(!this.value) return ""
+				let res = (this.value) ? this.value.join(" ~ ") : null
+				res = (res) ? res : null
+		      	return res
+			},
+
+			set(value){
+				console.log("SET", value)
+				if(!value){
+					this.value = []
+					this.changeDateRange()
+				}
+			}
+
+		}		
 	},
+
+	// watch:{
+	// 	value: (newValue, oldValue) => {
+	// 		console.log("NEW", newValue, "OLD", oldValue)
+	// 	}
+	// },
 
 	methods:{
 		
-		changeDateRange(index){
+		changeDateRange(){
 	      this.menu = false
-	      if( moment(this.value[0]).isAfter(moment(this.value[1])) ) this.value.reverse()
+	      if( this.value.length == 2 && moment(this.value[0]).isAfter(moment(this.value[1])) ) this.value.reverse()
 	      this.$emit("change", this, this.value)
 	    },
+
+	    changeView(data){
+	    	console.log("CHANGE VIEW", data)
+	    	if(!data){
+				this.value = []
+				this.changeDateRange()
+			}
+	    }
 
 	},
 

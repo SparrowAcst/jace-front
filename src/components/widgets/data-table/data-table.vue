@@ -8,6 +8,8 @@
       v-model = "selected"
       :items-per-page = "-1"
       :show-select = "(options.decoration) ? (getPropertyValue(options.decoration.selectBy)) ? true : false : false"
+      :single-select = "(options.decoration) ? (getPropertyValue(options.decoration.singleSelect)) ? true : false : false"
+      :selectable-key = "(options.decoration) ? (getPropertyValue(options.decoration.selectableKey)) ? options.decoration.selectableKey : '' : ''"
       :item-key="(options.decoration) ? getPropertyValue(options.decoration.selectBy) : null"
       :loading = "(options.decoration) ? getPropertyValue(options.decoration.loading) : false"
       :loading-text="(options.decoration) ? getPropertyValue(options.decoration.loadingText) : ''"
