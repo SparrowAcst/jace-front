@@ -1,7 +1,7 @@
 <template>
 	<div v-if="options && getPropertyValue">
 		<v-text-field 
-			
+			ref="input"
 			:v-model="(options.data && options.data.value) ? getPropertyValue(options.data.value) : null" 
 			:value = "(options.data && options.data.value) ? getPropertyValue(options.data.value) : null"
 			:label="(options.data) ? getPropertyValue(options.data.label) : ''" 
@@ -21,6 +21,7 @@
 			:prepend-icon="(options.decoration) ? getPropertyValue(options.decoration.prependIcon) || '' : ''" 
 
 			@input="inputData"
+			@focus="focus"
 			
 		></v-text-field>
 		
@@ -41,6 +42,11 @@ export default {
 	methods:{
 		inputData(data){
 			this.$emit("change", this, data)
+		},
+
+		focus(event){
+			// console.log("FOCUS TEXT", event)
+			this.$emit("focus", this.$refs.input)
 		}
 	}
 }

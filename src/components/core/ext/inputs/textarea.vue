@@ -1,7 +1,7 @@
 <template>
 	<div v-if="options && getPropertyValue">
 		<v-textarea 
-		
+			ref="input"
 			:v-model="(options.data && options.data.value) ? getPropertyValue(options.data.value) : null" 
 			:value = "(options.data && options.data.value) ? getPropertyValue(options.data.value) : null"
 			:label="(options.data) ? getPropertyValue(options.data.label) : ''" 
@@ -22,6 +22,7 @@
 			:class = "(options.decoration) ? getPropertyValue(options.decoration.classes) || '' : ''"
 
 			@input="inputData"
+			@focus="focus"
 		
 		></v-textarea>
 		
@@ -42,6 +43,11 @@ export default {
 	methods:{
 		inputData(data){
 			this.$emit("change", this, data)
+		},
+
+		focus(event){
+			// console.log("FOCUS AREA", event)
+			this.$emit("focus", this.$refs.input)
 		}
 	}
 }

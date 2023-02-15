@@ -55,6 +55,7 @@
           @push-menu="pushMenu"
           @change="inputData"
           @submit = "submitDialog"
+          @focus = "focus"
 
         ></component>        
       </div>  
@@ -98,24 +99,68 @@ export default {
 
   data: () => ({
     components,
-    opts: null
+    opts: null,
+    focusedAt: null
     
   }),
 
 
   methods: {
 
+    // inputData(sender, data){
+    //   if(
+    //     !isUndefined(sender.options) 
+    //     && !isUndefined(sender.options.data) 
+    //     && !isUndefined(sender.options.data.value)
+    //   ) {
+    //     if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
+    //       set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
+    //     } else {
+    //       sender.options.data.value = data
+    //     }
+    //   }   
+    // },
+
+    focus(sender){
+      // console.log("FOCUS", sender)
+      this.focusedAt = sender
+    },
+
     inputData(sender, data){
+      // console.log("IG Input data",sender,data)
       if(
         !isUndefined(sender.options) 
         && !isUndefined(sender.options.data) 
         && !isUndefined(sender.options.data.value)
       ) {
         if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
+          // console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
           set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
         } else {
-          sender.options.data.value = data
-        }
+          if((/^\$\{.+\}$/gi).test(sender.options.data.value)) {
+        
+            let f = sender.options.data.value
+                      .replace("${","")
+                      .replace(/}$/gim,"")
+                      .replace(/this\./gim,"")
+                    
+
+            // console.log(JSON.stringify(f))
+            set( this, f , data )
+
+          } else {
+            sender.options.data.value = data
+          }
+        }  
+        
+        // console.log("EMIT",sender.options.data.event || "input-data")
+        let event = sender.options.data.event || "input-data"
+        this.emit(event, this, sender, data)
+        this.$nextTick(() => {
+          // console.log("forceUpdate")
+          this.$forceUpdate()
+          // this.updateForce()
+        })
       }   
     },
 
@@ -185,14 +230,21 @@ export default {
       }
       let temp = extend({},cloneDeep(this.opts))
       this.opts = null
-      this.$nextTick(() => { this.opts = temp})
+      this.$nextTick(() => { 
+        this.opts = temp
+        if(this.focusedAt) this.focusedAt.focus()
+      })
     },
 
     updateForce(){
-      clnsole.log("updateForce")
+      // console.log("updateForce")
       let temp = extend({},cloneDeep(this.opts))
       this.opts = null
-      this.$nextTick(() => { this.opts = temp})
+      this.$nextTick(() => { 
+        this.opts = temp
+        console.log(this.focusedAt)
+        if(this.focusedAt) this.focusedAt.focus()
+      })
     },
 
     preview(){
