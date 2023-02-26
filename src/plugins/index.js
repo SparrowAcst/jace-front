@@ -2,6 +2,8 @@ import djImg from "@/components/core/ext/dj-img.vue"
 import warningDialog from "@/components/dialogs/core/warning.vue"
 import confirmDialog from "@/components/dialogs/core/confirm.vue"
 import progressDialog from "@/components/dialogs/core/progress.vue"
+import loaderDialog from "@/components/dialogs/core/loader.vue"
+
 import selectFileDialog from "@/components/dialogs/core/select-file.vue"
 import customDialog from "@/components/dialogs/core/custom-dialog.vue"
 import splashDialog from "@/components/dialogs/core/splash.vue"
@@ -360,6 +362,20 @@ export var djvuePlugin = {
         result.set = (options) => {
           Vue.prototype.$eventHub.emit("progress-dialog-set", extend(options, { dialogID: result.dialogID }))
         }
+        return result
+      },
+
+      loader(options) {
+
+        let result = Vue.prototype.$dialogManager.showAndWait(Vue.extend(loaderDialog), { persistent: false, hideOverlay: true, elevation: 0 }, options)
+        result.cancel = () => {
+          // console.log("FIRE CANCEL",result.dialogID)
+          Vue.prototype.$eventHub.emit("loader-dialog-cancel", { dialogID: result.dialogID })
+        }
+        result.set = (options) => {
+          Vue.prototype.$eventHub.emit("loader-dialog-set", extend(options, { dialogID: result.dialogID }))
+        }
+        result.set(options)
         return result
       },
 

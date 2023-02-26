@@ -106,7 +106,9 @@
 
     // },
 
-    created(){ this.template = this.config.data.embedded || ""; },
+    created(){ 
+      this.template = this.config.data.embedded || ""; 
+    },
 
     mounted(){ this.$emit("init") },
     

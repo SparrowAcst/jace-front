@@ -202,9 +202,9 @@ export default {
   },
   
   mounted() {
-    if( ! this.isProductionMode ){
+    // if( ! this.isProductionMode ){
       this.rendered = true  
-    }
+    // }
   }
 
 }

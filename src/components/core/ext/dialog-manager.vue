@@ -1,12 +1,14 @@
 <template>
   <div>
     <div v-for="(dialog,index) in items" :key="index">
-      <v-dialog v-model="dialog.isActive" :width="dialog.props.width" :height="dialog.props.height" :persistent="dialog.props.persistent" :hide-overlay="dialog.props.hideOverlay">
+      <v-dialog v-model="dialog.isActive" :width="dialog.props.width" :height="dialog.props.height" :persistent="dialog.props.persistent" :hide-overlay="dialog.props.hideOverlay" style="box-shadow: none !important">
         <component v-if="dialog.component" :is="dialog.component" :submit="dialog.resolve" :options="dialog.props" :dialogID="dialog.id"></component>
       </v-dialog>
     </div>
   </div>
 </template>
+
+
 <script>
 import Vue from "vue"
 import { findIndex, extend, clone } from "lodash"
@@ -82,3 +84,11 @@ export default {
 }
 
 </script>
+
+<style>
+
+  .v-dialog {
+    box-shadow: none !important;
+  }
+
+</style>
