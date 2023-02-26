@@ -5,11 +5,9 @@
   <base href="../../">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="description" content="Djvue app template. If you is author or collaborator use design tools for modify it">
+  <meta name="description" content="">
   <meta name="keywords" content="">
   <meta name="author" content="Andrey Boldak">
-  <meta name="Echarts" content="false">
-  <meta name="Mermaid" content="false">
   
   <title>//appTitle</title>
   <script>
@@ -24,7 +22,7 @@
 
   </script>
 
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+  <!-- <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet"> -->
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   
 </head>
@@ -58,6 +56,12 @@
 
 
   <<< } >>>
+
+<script>
+  if( new URL(window.location.href).pathname == "/"){
+    window.location.href = "./api/default"
+  }
+</script>  
 
 <script>
   //__appconfig

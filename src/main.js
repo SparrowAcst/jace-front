@@ -5,6 +5,9 @@ import VueClipboard from "vue-clipboard2"
 // import VueSSE from "./plugins/vue-sse"
 import Storage from 'vue-ls';
 import Fragment from 'vue-fragment'
+import './registerServiceWorker'
+
+Vue.config.productionTip = false
 
 
 import { 
