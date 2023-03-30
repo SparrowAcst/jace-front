@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component :is="layout" :options="options"></component>
+    <component :is="layout" :options="options" ref="layoutComponent"></component>
   </div>
 </template>
 <script>

@@ -134,6 +134,13 @@ export default {
 
   methods: {
 
+    getLayout(){
+      // let currentRoute = appRouter.getRoutes().filter( route => route.regex.test(`/${this.app.currentPage.id}`))
+      let currentRoute = appRouter.getRoutes().filter( route => route.instances.default)
+      // console.log(currentRoute)
+      return currentRoute[0].instances.default.$refs.layoutComponent
+    },
+
     checkDps(){
       this.dps_ready = false
       this.$http.get(this.$dps.getBaseURL()).then((res)=>{ 
@@ -226,6 +233,8 @@ export default {
     window.jaceApp = this
 
     console.log("jaceApp",jaceApp)
+    console.log("appRouter",appRouter)
+
 
     // this.$pubsub().then( service => service.publish({
     //   channel:"app",

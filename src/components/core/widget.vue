@@ -49,6 +49,9 @@
       <v-btn v-show="!isActive" icon class="mx-3" style="color: #aeaeae !important;">
       </v-btn>
       </div> -->  
+
+        
+      </v-container>
       <div class="d-flex justify-end">
       <component  
         v-if="config.type" 
@@ -143,6 +146,7 @@ export default {
     globalConfig() {
      return find(this.app.currentPage.holders[this.holder].widgets, (item) => item.id == this.config.id)
     },
+   
     widgetStyle() {
       if(!this.config.options.style) return 'width:100%;'
       try {

@@ -2,6 +2,7 @@
   <<< if (jace.mode == "development") { >>>
   
   <div pa-0 mt-0 class="holder" :class="{producttion:isProductionMode, accepted:isAcceptWidget}">
+           
     <!-- <div class="holder-title">
       <h4 v-if="!isProductionMode"> Widget Holder: {{name}}</h4>
     </div> -->
@@ -17,6 +18,7 @@
         :style="(isProductionMode) ? 'min-height:0;' : ''"
       >
         <transition-group type="transition" name="holders" tag="div" v-bind:class="{'empty-holder': isEmpty && !isProductionMode}">
+
           <dj-widget :config="widget" :holder="name" v-for="widget in widgets" :key="widget.id" class="list-group-item" @init="onInitChild"></dj-widget>
         </transition-group>
       </draggable>
@@ -141,6 +143,7 @@ export default {
           this._waitList = []
         }
       }
+      // console.log("BEFORE INIT", this, this._waitList.length)
       if (this._waitList.length == 0) {
         this.$emit("init", this)
       }
@@ -202,6 +205,8 @@ export default {
 
   created() {
 
+    // console.log("CREATE HOLDER", this)
+
     // if(!this.$dialog._components.insertWidgetDialog){
     //   this.$dialog.component('insertWidgetDialog', insertWidgetDialog)
     // }
@@ -253,7 +258,7 @@ export default {
       callback: (emitter, widgets) => {
        if( find(this.widgets, w => w.id == emitter.config.id)) {
 
-          console.log("holder-import-widgets", this.widgets, emitter, widgets)
+          // console.log("holder-import-widgets", this.widgets, emitter, widgets)
 
           widgets = ( isArray(widgets) ) ? widgets : [widgets]
           this.widgets = this.widgets.concat(widgets)

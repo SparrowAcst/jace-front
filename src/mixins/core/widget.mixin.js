@@ -87,9 +87,19 @@ export default {
 
 
     _updateConfig() {
-      
-      if (!this.pageStarted && this.isProductionMode) return
 
+      // console.log("_updateConfig", jaceApp.app.isPageStarted, this.config,this.pageStarted, this.isProductionMode )
+      
+      // if (!this.pageStarted) return
+      //jaceApp.app.isPageStarted = true
+      
+      if (!jaceApp.app.isPageStarted && this.isProductionMode) return
+      
+
+      //if (!this.pageStarted && this.isProductionMode) return
+
+      // console.log("START UPDATE")  
+        
       new Promise((resolve, reject) => {
 
         this.reconfigurable = (this.$refs && this.$refs.instance) ? !!this.$refs.instance.onReconfigure : false
@@ -391,7 +401,7 @@ export default {
     this.config.data.script = this.config.data.script || ""
     this._initSubscriptions()
     this._updateConfig()
-    // console.log("$create", this._uid, this.config.id, this.config.type)
+    // console.log("$create", this._uid, this.config.id, this.config.type, this.config)
   
   },
 

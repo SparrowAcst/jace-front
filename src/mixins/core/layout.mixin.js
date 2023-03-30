@@ -35,31 +35,37 @@ export default {
 
       appLevelMediators = appLevelMediators.map(m => this.$djvue.selectWidgets(this.$root, item => (item.config) && (item.config.id == m.id))[0])
 
-      if (pageLevelMediators.length == 0) pageLevelMediators.push({ run: () => {} })
-      if (appLevelMediators.length == 0) appLevelMediators.push({ run: () => {} })
+      // if (pageLevelMediators.length == 0) pageLevelMediators.push({ run: () => {} })
+      // if (appLevelMediators.length == 0) appLevelMediators.push({ run: () => {} })
 
-
-      return pageLevelMediators.map( d => ({
+      const result = pageLevelMediators.map( d => ({
           instance: d,
           level: "Page level"
         }))
         .concat( appLevelMediators.map( d=> ({
           instance: d,
           level: "App level"
-        }))) 
+        })))
+
+      // console.log("MEDIATORS", result)     
+      return result
       // [pageLevelMediators, appLevelMediators]
     },
 
     pageStart() {
       let mediators = this.getMediators();
       // console.log(mediators)
-      // console.log("PageStart", mediators)
+      console.log("PageStart", mediators)
 
-      Promise.all(this.getMediators().map(m => m.instance.run()))
+      Promise.all(this.getMediators().map(m => {
+        console.log("RUN", m.instance.run)
+        return m.instance.run()
+      }))
       .then(() => {
         // Promise.all(mediators[1].map(al => al.run()))
         //   .then(() => {
             this.$nextTick(() => {
+              jaceApp.app.isPageStarted = true
               this.emit("page-start")
                 .then(() => {
                   this.emit("page-start-after")
@@ -76,6 +82,7 @@ export default {
         })
 
         this.$nextTick(() => {
+          jaceApp.app.isPageStarted = true
           this.emit("page-start")
             .then(() => {
               this.emit("page-start-after")
@@ -104,6 +111,94 @@ export default {
         // })
     },
 
+  //   async pageStart() {
+     
+  //     let mediators = this.getMediators();
+     
+  //     // console.log("PageStart", mediators)
+     
+  //     try {
+  //       // console.log("EXECUTE SCRIPTS", mediators.length)
+  //       for( let i=0; i <  mediators.length; i++ ){
+  //         console.log("RUN", mediators[i].instance.config.id)
+  //         await mediators[i].instance.run() 
+  //       }
+
+  //     } catch(e) {
+
+  //       console.error(e.toString())
+  //       this.$djvue.warning({
+  //         type: "error",
+  //         title: `Mediator Error`,
+  //         text: e.toString()
+  //       })
+
+  //     } finally {
+
+  //       this.$nextTick( async () => {
+  //         jaceApp.app.isPageStarted = true
+  //         await this.emit("page-start")
+  //         this.emit("page-start-after")
+  //       })
+
+  //     }
+  // },     
+
+
+      // Promise.all(this.getMediators().map(m => {
+      //   console.log("RUN", m.instance.run)
+      //   return m.instance.run()
+      // }))
+      // .then(() => {
+      //   // Promise.all(mediators[1].map(al => al.run()))
+      //   //   .then(() => {
+      //       this.$nextTick(() => {
+      //         jaceApp.app.isPageStarted = true
+      //         this.emit("page-start")
+      //           .then(() => {
+      //             this.emit("page-start-after")
+      //           })
+      //       })
+      // })
+      // .catch((e) => {
+      //   // eslint-disable-next-line
+      //   console.error(e.toString())
+      //   this.$djvue.warning({
+      //     type: "error",
+      //     title: `Mediator Error`,
+      //     text: e.toString()
+      //   })
+
+      //   this.$nextTick(() => {
+      //     jaceApp.app.isPageStarted = true
+      //     this.emit("page-start")
+      //       .then(() => {
+      //         this.emit("page-start-after")
+      //       })
+      //   })
+
+      // })
+
+        // })
+        // .catch((e) => {
+        //   // eslint-disable-next-line  
+        //   console.error("Page level error", e.toString())
+        //   this.$djvue.warning({
+        //     type: "error",
+        //     title: `Page level Error`,
+        //     text: e.toString()
+        //   })
+
+        //   this.$nextTick(() => {
+        //     this.emit("page-start")
+        //       .then(() => {
+        //         this.emit("page-start-after")
+        //       })
+        //   })
+
+        // })
+    // },
+
     onChildsInitiated() {
       this.pageStart() 
     }
@@ -120,6 +215,8 @@ export default {
       },
       rule: () => true
     })
+
+
     this.on({
       event: "page-stop",
       callback: () => { this.off() },

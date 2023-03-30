@@ -88,71 +88,79 @@ export default {
         if (jace.mode == "development") { >>>
 
             deleteSection(index) {
-                    let section = this.app.currentPage.sections[index];
-                    section.holders.forEach(h => {
-                        this.app.currentPage.holders[h.name] = undefined;
+                let section = this.app.currentPage.sections[index];
+                section.holders.forEach(h => {
+                    this.app.currentPage.holders[h.name] = undefined;
+                })
+                this.app.currentPage.sections.splice(index, 1)
+
+                this.saveAppConfig()
+                    .then(() => {
+                        this.fullReload()
                     })
-                    this.app.currentPage.sections.splice(index, 1)
+            },
 
-                    this.saveAppConfig()
-                        .then(() => {
-                            this.fullReload()
-                        })
-                },
+            
+            insertSection(sectionIndex, section){
+              section.holders.forEach( h => {
+                this.app.currentPage.holders[h.name] = h
+              })
+              this.app.currentPage.sections.splice(sectionIndex + 1, 0, section)
+            },    
 
-                addSection(sectionIndex, columns) {
+            addSection(sectionIndex, columns) {
 
-                    let newSection = {
-                        id: this.$djvue.randomName(),
-                        type: "section",
-                        align: "justify-start",
-                        holders: []
+                let newSection = {
+                    id: this.$djvue.randomName(),
+                    type: "section",
+                    align: "justify-start",
+                    holders: []
+                }
+
+                let widthes = [
+                    Math.trunc(12 / columns),
+                    Math.trunc(12 / columns) + 12 % columns
+                ]
+
+                for (let i = 0; i < columns; i++) {
+                    let h = {
+                        name: this.$djvue.randomName(),
+                        width: (i < columns-1) ? widthes[0] : widthes[1] //Number.parseInt(12 / columns)
                     }
+                    newSection.holders.push(h)
+                    this.app.currentPage.holders[h.name] = { widgets: [] }
+                }
 
-                    let widthes = [
-                        Math.trunc(12 / columns),
-                        Math.trunc(12 / columns) + 12 % columns
-                    ]
+                this.app.currentPage.sections.splice(sectionIndex + 1, 0, newSection)
 
-                    for (let i = 0; i < columns; i++) {
-                        let h = {
-                            name: this.$djvue.randomName(),
-                            width: (i < columns-1) ? widthes[0] : widthes[1] //Number.parseInt(12 / columns)
-                        }
-                        newSection.holders.push(h)
-                        this.app.currentPage.holders[h.name] = { widgets: [] }
-                    }
+                this.saveAppConfig()
+                    .then(() => {
+                        this.fullReload()
+                    })
 
-                    this.app.currentPage.sections.splice(sectionIndex + 1, 0, newSection)
+            },
 
-                    this.saveAppConfig()
-                        .then(() => {
-                            this.fullReload()
-                        })
+            expandWidthDisabled(s, h) {
+                let _sum = sum(s.holders.map(d => d.width))
+                let _max = max(s.holders.filter(d => d.name != h.name).map(d => d.width))
+                return (h.width == 12) || ((_sum == 12) && (_max == 1))
+            },
 
-                },
+            collapseWidthDisabled(s, h) {
+                return h.width == 1
+            },
 
-                expandWidthDisabled(s, h) {
+            changeWidth(s, h, value) {
+                h.width += value
+                if (value > 0) {
                     let _sum = sum(s.holders.map(d => d.width))
                     let _max = max(s.holders.filter(d => d.name != h.name).map(d => d.width))
-                    return (h.width == 12) || ((_sum == 12) && (_max == 1))
-                },
-
-                collapseWidthDisabled(s, h) {
-                    return h.width == 1
-                },
-
-                changeWidth(s, h, value) {
-                    h.width += value
-                    if (value > 0) {
-                        let _sum = sum(s.holders.map(d => d.width))
-                        let _max = max(s.holders.filter(d => d.name != h.name).map(d => d.width))
-                        let h1 = find(s.holders.filter(d => d.name != h.name), d => d.width == _max)
-                        if (_sum > 12) h1.width -= value
-                    }
-                    this.emitResizeEvent()
-                    this.setNeedSave(true)
-                },
+                    let h1 = find(s.holders.filter(d => d.name != h.name), d => d.width == _max)
+                    if (_sum > 12) h1.width -= value
+                }
+                this.emitResizeEvent()
+                this.setNeedSave(true)
+            },
 
         <<<
         } >>>

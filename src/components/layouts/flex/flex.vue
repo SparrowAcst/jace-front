@@ -108,6 +108,15 @@ export default {
         })
     },
 
+
+    insertSection(sectionIndex, section){
+      section.holders.forEach( h => {
+        this.app.currentPage.holders[h.name] = h
+      })
+      this.app.currentPage.sections.splice(sectionIndex + 1, 0, section)
+    },
+
+
     addSection(sectionIndex, columns) {
 
       let newSection = {
