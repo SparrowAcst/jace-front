@@ -1,17 +1,16 @@
 <template>
-  <v-simple-table v-if="options">
-    <template v-slot:default>
+  <div v-if="options" :class = "(options.decoration) ? options.decoration.classes : ''">
+  <table  style="width: 100%;">
       <tbody>
         <tr
           v-for="(row, rowIndex) in options.rows" :key="rowIndex" 
           :class="(row.decoration) ? row.decoration.classes +' '+ ((row.selected) ? ((options.decoration) ? options.decoration.activeClass : 'selected'):'') : ((row.selected) ? ((options.decoration) ? options.decoration.activeClass : 'selected'):'')" 
           :style="(row.decoration) ? row.decoration.style : ''"
         >
-
           <td 
             v-for="(col, colIndex) in row.cols" 
             :key="colIndex" 
-            :class="(col.decoration) ? col.decoration.classes +' '+ ((col.selected) ? ((options.decoration) ? options.decoration.activeClass : 'selected'):'') : ((col.selected) ? ((options.decoration) ? options.decoration.activeClass : 'selected'):'')" 
+            :class="(col.decoration) ? col.decoration.classes +' '+ ((row.selected) ? ((options.decoration) ? options.decoration.activeClass : 'selected'):'') : ((row.selected) ? ((options.decoration) ? options.decoration.activeClass : 'selected'):'')" 
             :style="(col.decoration) ? col.decoration.style : ''" 
           >
             
@@ -33,8 +32,8 @@
            </td>     
         </tr>
       </tbody> 
-    </template> 
-  </v-simple-table>      
+  </table>  
+  </div>    
 </template>          
 
 <script>
@@ -83,14 +82,14 @@ export default {
     // },
 
    inputData(sender, data){
-      console.log("IG Input data",sender,data)
+      // console.log("IG Input data",sender,data)
       if(
         !isUndefined(sender.options) 
         && !isUndefined(sender.options.data) 
         && !isUndefined(sender.options.data.value)
       ) {
         
-        console.log(">>>>>>>>>", sender.options.data.value)
+        // console.log(">>>>>>>>>", sender.options.data.value)
 
         if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
           // console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
@@ -104,7 +103,7 @@ export default {
                       .replace(/this\./gim,"")
                     
 
-            console.log(JSON.stringify(f))
+            // console.log(JSON.stringify(f))
             set( this, f , data )
 
           } else {
@@ -127,23 +126,20 @@ export default {
     this.onUpdate({data:null})
   },
 
-  selectItem(indexes){
+  selectItem(index){
     if(this.options){
-        // console.log(indexes)
-    
         this.options.rows.forEach(row => {
           row.selected = false
-          row.cols.forEach( col => {
-            col.selected = false
-          }) 
         })
 
-        this.selection = indexes
-        this.options.rows[this.selection.row].selected = true
-        this.options.rows[this.selection.row].cols[this.selection.col].selected = true
-        // this.options.data[this.selection.row].name = "SELECTED" 
-        // this.onUpdate({data:null})
-
+        if (isNull(index) || isUndefined(index)) return
+        
+        this.selection = index
+        this.options.rows[this.selection].selected = true
+       
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
     }
 
   },
@@ -154,8 +150,16 @@ export default {
       },
     
     pushRef(sender){
+        
         let event = (sender.options.data) ? sender.options.data.event || "push-ref" : "push-ref"
+        
+        if( this.options.selectable) {
+          let selection = (sender.options) ? sender.options.$rowIndex : null
+          this.selectItem(selection)
+        }
+          
         this.emit(event, this.options, sender.options)
+      
       },
     
     pushMenu(sender){
@@ -247,7 +251,9 @@ export default {
               row.cols.forEach( (c, cindex) => {
                 this.$colIndex = cindex
                 c = this.applyContext(c)
+                c.$rowIndex = rindex
               })
+
               this.options.rows.push(row)
             })
           }
@@ -297,8 +303,18 @@ export default {
 </script>
 
 <style scoped>
+  
   a:hover{
     text-decoration: underline !important;
     font-weight: inherit !important;
   }
+
+  th,td {
+    padding: 0;
+  }
+
+  table {
+    border-spacing: 0;
+  }
+
 </style>

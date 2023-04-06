@@ -90,7 +90,7 @@ export default {
         && !isUndefined(sender.options.data.value)
       ) {
         if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
-          console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
+          // console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
           set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
         } else {
           if((/^\$\{.+\}$/gi).test(sender.options.data.value)) {
@@ -101,7 +101,7 @@ export default {
                       .replace(/this\./gim,"")
                     
 
-            console.log(JSON.stringify(f))
+            // console.log(JSON.stringify(f))
             set( this, f , data )
 
           } else {

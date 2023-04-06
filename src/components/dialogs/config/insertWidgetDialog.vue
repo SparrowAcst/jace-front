@@ -245,7 +245,10 @@ export default {
               "dialog-widget",
               "chart-low-level-widget",
               "timeline-widget",
-              "file-viewer-widget"
+              "file-viewer-widget",
+              "image-viewer-widget",
+              "edu-editor-widget:Editor",
+               
             ]
           },
 

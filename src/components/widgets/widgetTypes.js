@@ -99,6 +99,7 @@ import FormReportWidget from "./form-report/form-report.type.js"
 import FormResponseWidget from "./form-response/form-response.type.js"
 
 import FileViewerWidget from "./file-viewer/file-viewer.type.js"
+import ImageViewerWidget from "./image-viewer/image-viewer.type.js"
 
 
 export default {
@@ -192,6 +193,8 @@ export default {
 	"form-response-widget": FormResponseWidget,
 
 	"file-viewer-widget": FileViewerWidget,
+	"image-viewer-widget": ImageViewerWidget,
+	
 }	
 
 

@@ -95,7 +95,9 @@ export default {
       'form-report-widget': () => import("./form-report/form-report.vue"),
       'form-response-widget': () => import("./form-response/form-response.vue"),
       
-      'file-viewer-widget': () => import("./file-viewer/file-viewer.vue")
+      'file-viewer-widget': () => import("./file-viewer/file-viewer.vue"),
+      'image-viewer-widget': () => import("./image-viewer/image-viewer.vue")
+      
       
       
       
