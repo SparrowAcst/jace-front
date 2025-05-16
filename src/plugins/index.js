@@ -323,7 +323,7 @@ export var djvuePlugin = {
 
       login: () => {
         Vue.cookie.set('redirectToUrl', window.location);
-        window.location = `/auth/google`;
+        window.location = `/signin`;
       },
 
       randomName: () => Math.random().toString(36).substring(2),

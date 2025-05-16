@@ -24,7 +24,9 @@
 				:dense="(options.decoration) ? getPropertyValue(options.decoration.dense) : false"
 			    :rounded="(options.decoration) ? getPropertyValue(options.decoration.rounded) : false"
 		        :text="(options.decoration) ? getPropertyValue(options.decoration.text) : false"
-		        
+		        :x-small="(options.decoration) ? getPropertyValue(options.decoration.xSmall) : false"
+	        	:small="(options.decoration) ? getPropertyValue(options.decoration.small) : false"
+	        
 	            style="
 	              text-transform:none !important;
 	              font-weight: inherit !important;
@@ -49,12 +51,15 @@
 	            :disabled = "(c.disabled) ? getPropertyValue(c.disabled) : false"
 	            @click="resolve(c)"
 	          >
-	            <v-list-item-icon v-if="!!c.icon" class="mr-1">
-	              <v-icon v-text="c.icon"></v-icon>
-	            </v-list-item-icon>
-	            <v-list-item-content>
-	              <v-list-item-title v-text="c.title"></v-list-item-title>
-	            </v-list-item-content>
+	            <div v-if="c.type !== 'divider'" class="flex d-flex align-center">
+		            <v-list-item-icon v-if="!!c.icon" class="mr-1">
+		              <v-icon v-text="c.icon"></v-icon>
+		            </v-list-item-icon>
+		            <v-list-item-content>
+		              <v-list-item-title v-text="c.title"></v-list-item-title>
+		            </v-list-item-content>
+		        </div>    
+	            <v-divider v-else></v-divider>
 	          </v-list-item>
 	      	</v-list>
 	      </v-menu>

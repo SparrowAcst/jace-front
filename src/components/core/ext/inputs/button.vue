@@ -12,6 +12,7 @@
 	        :x-small="(options.decoration) ? getPropertyValue(options.decoration.xSmall) : false"
 	        :small="(options.decoration) ? getPropertyValue(options.decoration.small) : false"
 	        :icon="(options.decoration) ? getPropertyValue(options.decoration.onlyIcon) : false"
+	        :loading="(options.decoration) ? getPropertyValue(options.decoration.loading) : false"
 	        
 	        style="
 	          text-transform:none !important;
@@ -51,6 +52,7 @@ export default {
 		resolve(){
 			this.$emit("push-button", this)
 			this.$emit("select")
+			// this.$emit("change", this)
 		}
 	}
 }

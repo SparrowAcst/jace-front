@@ -1,6 +1,5 @@
 <template>
   <v-row class="ma-0 pa-0">
-  
     <v-layout v-if="!isProductionMode" column xs12 mb-3 :style=" (!isProductionMode) ? `border:2px dashed #dedede;` : '' ">
       
       <div style="    

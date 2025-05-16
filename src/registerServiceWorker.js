@@ -1,7 +1,11 @@
 /* eslint-disable no-console */
 
-const BASE_URL = "http://localhost:3000" 
+// const BASE_URL = "http://localhost:3000" 
 // const BASE_URL = "https://data-analysis-1.bioacoustics.ai"
+// const BASE_URL = "https://clinic.bioacoustics.ai"
+
+const BASE_URL = "https://ade.bioacoustics.ai"
+
 import { register } from 'register-service-worker'
 
 // if (process.env.NODE_ENV === 'production') {

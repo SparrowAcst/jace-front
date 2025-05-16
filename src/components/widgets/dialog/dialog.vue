@@ -36,17 +36,17 @@
     </pre>  
  -->
     <div v-if="opts" 
-      :class="(opts.decoration) ? opts.decoration.classes : ''" 
-      :style="(opts.decoration) ? opts.decoration.style : ''"
+      :class="(opts.decoration) ? getPropertyValue(opts.decoration.classes) : ''" 
+      :style="(opts.decoration) ? getPropertyValue(opts.decoration.style) : ''"
     >
 
       <div v-for="(row, rowIndex) in opts.rows" :key="rowIndex" 
-        :class="(row.decoration) ? row.decoration.classes : ''" 
-        :style="(row.decoration) ? row.decoration.style : ''"
+        :class="(row.decoration) ? getPropertyValue(row.decoration.classes) : ''" 
+        :style="(row.decoration) ? getPropertyValue(row.decoration.style) : ''"
       >
         <component v-if="components[`${col.type}Input`]" v-for="(col, colIndex) in row.cols" :key="colIndex" 
-          :class="(col.decoration) ? col.decoration.classes : ''" 
-          :style="(col.decoration) ? col.decoration.style : ''"
+          :class="(col.decoration) ? getPropertyValue(col.decoration.classes) : ''" 
+          :style="(col.decoration) ? getPropertyValue(col.decoration.style) : ''"
           :is="`${col.type}Input`" 
           :options="col"
           :getPropertyValue="getPropertyValue"
@@ -56,6 +56,7 @@
           @change="inputData"
           @submit = "submitDialog"
           @focus = "focus"
+          @chart-event="chartEvent"
 
         ></component>        
       </div>  
@@ -126,6 +127,43 @@ export default {
       this.focusedAt = sender
     },
 
+    chartEvent(sender, data){
+      console.log("Dialog chart event",sender, data)
+      if(
+        !isUndefined(sender.options) 
+        && !isUndefined(sender.options.data)
+      // )   
+        // && !isUndefined(sender.options.data.value)
+      ) {
+        // if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
+        //   // console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
+        //   set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
+        // } else {
+        //   if((/^\$\{.+\}$/gi).test(sender.options.data.value)) {
+        
+        //     let f = sender.options.data.value
+        //               .replace("${","")
+        //               .replace(/}$/gim,"")
+        //               .replace(/this\./gim,"")
+                    
+
+        //     // console.log(JSON.stringify(f))
+        //     set( this, f , data )
+
+        //   } else {
+        //     sender.options.data.value = data
+        //   }
+        // }  
+        
+        // console.log("EMIT",sender.options.data.event || "input-data")
+        let event = sender.options.data.event || "chart-event"
+        this.emit(event, sender, data)
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
+      }   
+    },
+
     inputData(sender, data){
       // console.log("IG Input data",sender,data)
       if(
@@ -183,29 +221,58 @@ export default {
     //   return ( (/^\{\{.+\}\}$/gi).test(v) ) ? get(this, v.replace("{{","").replace("}}","").trim()) : v  
     // },
 
+
     getPropertyValue(v){
-      
-      if((/^\{\{.+\}\}$/gi).test(v))
-        return get(this, v
-                  .replace("{{","")
-                  .replace("}}","")
-                  .trim()
-        )
+      try {
+          if((/^\{\{.+\}\}$/gi).test(v))
+            return get(this, v
+                      .replace("{{","")
+                      .replace("}}","")
+                      .trim()
+            )
 
-      if((/^\$\{.+\}$/gi).test(v)) {
+          if((/^\$\{.+\}$/gi).test(v)) {
+            
+            let f = `(${v
+                      .replace("${","")
+                      .replace(/}$/gim,"")
+                    })`
+            
+            
+            return eval(f)
+          }
         
-        let f = `(${v
-                  .replace("${","")
-                  .replace(/}$/gim,"")
-                })`
-        
-        
-        return eval(f)
-      }
-      
-
-      return v  
+          return v
+      } catch (e) {
+        // console.log("WIDGET WARNING ", this)
+        // console.log("Cannot getPropertyValue for "+ v +"\n"+e.toString())
+        return (!this.isProductionMode) ? "Cannot getPropertyValue: "+e.toString() : "" //v
+      }       
     },
+
+    // getPropertyValue(v){
+      
+    //   if((/^\{\{.+\}\}$/gi).test(v))
+    //     return get(this, v
+    //               .replace("{{","")
+    //               .replace("}}","")
+    //               .trim()
+    //     )
+
+    //   if((/^\$\{.+\}$/gi).test(v)) {
+        
+    //     let f = `(${v
+    //               .replace("${","")
+    //               .replace(/}$/gim,"")
+    //             })`
+        
+        
+    //     return eval(f)
+    //   }
+      
+
+    //   return v  
+    // },
 
     setPropertyValue(v, data){
       if((/^\{\{.+\}\}$/gi).test(v)) {

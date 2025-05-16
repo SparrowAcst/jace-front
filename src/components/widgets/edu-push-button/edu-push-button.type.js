@@ -1,27 +1,34 @@
 export default {
-  name: "edu-push-button-widget",
-  icon: "mdi-card-outline",
+    name: "edu-push-button-widget",
+    icon: "mdi-card-outline",
 
-  getInitialConfig() {
+    getInitialConfig() {
 
-    return {
-      type: "edu-push-button-widget",
-      name: "noname",
-      icon: "mdi-card-outline",
-      options: {
-        widget: {
-          visible: true
+        return {
+            type: "edu-push-button-widget",
+            name: "noname",
+            icon: "mdi-card-outline",
+            options: {
+                widget: {
+                    visible: true
+                }
+
+            },
+
+            data: {
+                embedded: {
+                    "data": {
+                        "event": "push"
+                    },
+                    "decoration": {
+                        "title": "Button",
+                        "outlined": true,
+                        "text": false,
+                        "color": "primary",
+                        "classes": "mx-1 subtitle-2"
+                    }
+                }
+            }
         }
-
-      },
-
-      data: {
-        embedded: [{
-            title: "Run",
-            event: "push"
-        }]
-      }
     }
-
-  }
-}
+}    

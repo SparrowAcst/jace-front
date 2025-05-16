@@ -25,20 +25,29 @@ import axios from "axios";
 import {v4} from "uuid"
 import * as ast from "yaml-ast-parser"
 import activityDetector from 'activity-detector'
+import * as echarts from 'echarts'
+
+import UndoRedo from "./undo-redo"
 
 
 import Ajv from "ajv"
 const ajv = new Ajv({ allErrors: true })
 
 import ajvErrors from "ajv-errors"
+import Resumable from "resumablejs"
 
 ajvErrors(ajv /*, {singleError: true} */ )
 
 
 import * as YAML from "js-yaml/dist/js-yaml.mjs"
+import { md5 } from 'js-md5'
+
 
 
 import Validator from "@/components/core/ext/molfar/schema-validator/index.js"
+
+import * as Diff from "jsondiffpatch" 
+import beforeunloadRequest from 'beforeunload-request'
 
 <<<
 if (jace.mode == "development") { >>>
@@ -115,6 +124,11 @@ export default {
       window.moment = window.moment || moment
       window.uuid = window.uuid || v4
       window.activityDetector = window.activityDetector || activityDetector
+      window.echarts = echarts
+      window.Resumable = Resumable
+      window.md5 = md5
+      window.Diff = Diff
+      window.beforeunloadRequest = beforeunloadRequest
 
       this.api = {
         selectWidgets: (filter) => {
@@ -190,8 +204,13 @@ export default {
         SchemaValidator: Validator,
         ajv,
         ast,
+        UndoRedo,
+        md5: md5,
+        Diff,
 
         Cookie: this.$cookie,
+
+        beforeunloadRequest: beforeunloadRequest,
 
         eval: (script, context) => {
           try {
@@ -250,6 +269,8 @@ export default {
 
       }
 
+      window.selectWidgets = this.api.selectWidgets
+
       try {
 
         eval(
@@ -270,7 +291,10 @@ export default {
               let ast = this.api.ast;
               let ajv = this.api.ajv;
               let SchemaValidator = this.api.SchemaValidator
-
+              let UndoRedo = this.api.UndoRedo
+              let md5 = this.api.md5
+              let Diff = this.api.Diff
+              let beforeunloadRequest = this.api.beforeunloadRequest
 
               ${this.config.data.script} }
             )

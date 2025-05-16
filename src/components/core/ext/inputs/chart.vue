@@ -25,7 +25,7 @@ export default {
 	methods:{
 		
 		chartEventHandler(params){
-	      this.emit("chart-event", this, params)
+	      this.$emit("chart-event", this, params)
 	    }
 	
 	}

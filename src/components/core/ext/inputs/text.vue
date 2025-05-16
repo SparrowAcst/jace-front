@@ -5,6 +5,11 @@
 			:v-model="(options.data && options.data.value) ? getPropertyValue(options.data.value) : null" 
 			:value = "(options.data && options.data.value) ? getPropertyValue(options.data.value) : null"
 			:label="(options.data) ? getPropertyValue(options.data.label) : ''" 
+			
+			:hint="(options.data) ? getPropertyValue(options.data.hint) : ''"
+			:persistent-hint="(options.data) ? getPropertyValue(options.data.hint) : false" 
+
+
 			:disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 
 			:readonly="(options.data) ? getPropertyValue(options.data.readonly) : false" 
 			

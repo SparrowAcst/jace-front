@@ -6,7 +6,9 @@
 	    >
 	          	<dj-img 
 		          	:src="getPropertyValue(decoration.src)" 
-		          	:icon="getPropertyValue(decoration.icon)">
+		          	:icon="getPropertyValue(decoration.icon)"
+		          	:alt="getPropertyValue(decoration.alt)"
+		        >  	
 	    		</dj-img>
 	    </v-avatar>
 	    <div class="justify-center px-2">

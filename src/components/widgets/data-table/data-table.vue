@@ -17,6 +17,11 @@
       :items="items"
       :style="(options.decoration) ? getPropertyValue(options.decoration.style) : ''"
       :dense = "(options.decoration) ? getPropertyValue(options.decoration.dense) : false"
+
+      :group-by = "(options.decoration) ? getPropertyValue(options.decoration.groupBy) : null"
+      :show-group-by = "(options.decoration && getPropertyValue(options.decoration.groupBy)) ? true : false"
+      :fixed-header = "(options.decoration && getPropertyValue(options.decoration.fixedHeader)) ? true : false"
+      :height = "(options.decoration && getPropertyValue(options.decoration.height)) ? getPropertyValue(options.decoration.height) : ''"
       hide-default-footer
     >
      

@@ -18,7 +18,7 @@
 
                 <dj-holder name="h-bar" @init="onInitChild"></dj-holder>
             </v-navigation-drawer>
-            <v-col class="my-0 pl-1" :style= "(!drawer) ? 'border-left:1px solid #e0e0e0;' : '' ">
+            <v-col class="my-0 pl-1 main-holder" :style= "(!drawer) ? 'border-left:1px solid #e0e0e0;' : '' ">
                 
                 
                 <dj-section 
@@ -47,6 +47,7 @@ if (jace.mode == "development") { >>>
 <<< } >>>
 
 import layoutMixin from "@/mixins/core/layout.mixin.js"
+import {findIndex} from "lodash"
 
 export default {
 
@@ -87,17 +88,23 @@ export default {
         <<<
         if (jace.mode == "development") { >>>
 
-            deleteSection(index) {
+            getSectionIndex(id){
+                return findIndex(this.app.currentPage.sections, s => s.id == id)
+            },
+
+            deleteSection(index, noSaveConfig) {
                 let section = this.app.currentPage.sections[index];
                 section.holders.forEach(h => {
                     this.app.currentPage.holders[h.name] = undefined;
                 })
                 this.app.currentPage.sections.splice(index, 1)
 
-                this.saveAppConfig()
-                    .then(() => {
-                        this.fullReload()
-                    })
+                if(!noSaveConfig){
+                    this.saveAppConfig()
+                        .then(() => {
+                            this.fullReload()
+                        })
+                }        
             },
 
             

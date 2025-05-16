@@ -13,6 +13,7 @@
       <div v-for="(row, rowIndex) in options.rows" :key="rowIndex" 
         :class="(row.decoration) ? getPropertyValue(row.decoration.classes) : ''" 
         :style="(row.decoration) ? getPropertyValue(row.decoration.style) : ''"
+        
       >
         <component v-if="components[`${col.type}Input`]" v-for="(col, colIndex) in row.cols" :key="colIndex" 
           :class="(col.decoration) ? getPropertyValue(col.decoration.classes) : ''" 
@@ -23,8 +24,10 @@
           @push-button="pushButton"
           @push-ref="pushRef"
           @push-menu="pushMenu"
+          @command="command"
           @change="inputData"
-
+          @select-files="selectFiles"
+          @chart-event="chartEvent"
         ></component>        
       </div>  
     </div>  
@@ -68,6 +71,43 @@ export default {
 
 
   methods: {
+
+    chartEvent(sender, data){
+      console.log("Input Group chart event",sender, data)
+      if(
+        !isUndefined(sender.options) 
+        && !isUndefined(sender.options.data)
+      // )   
+        // && !isUndefined(sender.options.data.value)
+      ) {
+        // if((/^\{\{.+\}\}$/gi).test(sender.options.data.value)) {
+        //   // console.log(sender.options.data.value.replace("{{","").replace("}}","").trim())
+        //   set( this, sender.options.data.value.replace("{{","").replace("}}","").trim(), data )
+        // } else {
+        //   if((/^\$\{.+\}$/gi).test(sender.options.data.value)) {
+        
+        //     let f = sender.options.data.value
+        //               .replace("${","")
+        //               .replace(/}$/gim,"")
+        //               .replace(/this\./gim,"")
+                    
+
+        //     // console.log(JSON.stringify(f))
+        //     set( this, f , data )
+
+        //   } else {
+        //     sender.options.data.value = data
+        //   }
+        // }  
+        
+        // console.log("EMIT",sender.options.data.event || "input-data")
+        let event = sender.options.data.event || "chart-event"
+        this.emit(event, sender, data)
+        this.$nextTick(() => {
+          this.$forceUpdate()
+        })
+      }   
+    },
 
     inputData(sender, data){
       // console.log("IG Input data",sender,data)
@@ -121,6 +161,16 @@ export default {
         this.emit(event, this.options, sender.options)
       },
     
+    command(sender, data){
+        let event = (sender.options.data) ? sender.options.data.command || "command" : "command"
+        this.emit(event, data, sender.options)
+    },
+
+    selectFiles(sender, data){
+        let event = (sender.options.data) ? sender.options.data.event || "select-files" : "select-files"
+        this.emit(event, data, sender.options)
+    },
+
     pushMenu(sender){
         let event = sender.event || "push-menu"
         // console.log(this._uid, event, this.options, sender)
@@ -174,6 +224,7 @@ export default {
 
     
     onUpdate({ data }, mode) {
+
       // console.log("ONUPDATE WIDGET", this, data, mode)
       if( mode ){
         if (mode.override) {
@@ -183,7 +234,8 @@ export default {
           set(this, mode.extend, extend(get(this, mode.extend), data))
         }
       } else {
-        this.options = data  
+        this.options = data
+        // console.log(this.options)
       }
       let temp = extend({},this.options)
       // console.log("IG ONUPDATE", data, mode, extend({},temp), this)

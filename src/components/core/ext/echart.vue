@@ -44,10 +44,10 @@ export default {
       }
 
       if (options) {
-       setTimeout(()=>{
+       setTimeout(() => {
           this.chart.setOption(options)
           this.chart.on('click', params => { 
-            // console.log("echart component", params)
+            console.log("echart component event", params)
             this.$emit("chart-event", params)
           })
 

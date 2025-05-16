@@ -96,7 +96,10 @@ export default {
       'form-response-widget': () => import("./form-response/form-response.vue"),
       
       'file-viewer-widget': () => import("./file-viewer/file-viewer.vue"),
-      'image-viewer-widget': () => import("./image-viewer/image-viewer.vue")
+      'image-viewer-widget': () => import("./image-viewer/image-viewer.vue"),
+      "one-of-widget": () => import("./one-of-widget/one-of.vue"),
+      "many-of-widget": () => import("./many-of-widget/many-of.vue"),
+      "timer-widget": () => import("./timer-widget/timer.vue"),
       
       
       

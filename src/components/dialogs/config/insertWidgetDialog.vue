@@ -248,6 +248,9 @@ export default {
               "file-viewer-widget",
               "image-viewer-widget",
               "edu-editor-widget:Editor",
+              "one-of-widget",
+              "many-of-widget",
+              "timer-widget"
                
             ]
           },

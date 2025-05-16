@@ -25,7 +25,7 @@
 		        `"
 		        @click.stop="resolve(index)"
 		     >
-		     	<div class="d-flex align-center" style="width:100%">
+		     	<div :class= "'d-flex align-center ' + (item.class || '')" style="width:100%">
 		          <v-icon v-if="item.icon" class="pr-1">
 		            {{item.icon}}
 		          </v-icon>

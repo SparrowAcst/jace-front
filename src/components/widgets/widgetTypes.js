@@ -101,6 +101,10 @@ import FormResponseWidget from "./form-response/form-response.type.js"
 import FileViewerWidget from "./file-viewer/file-viewer.type.js"
 import ImageViewerWidget from "./image-viewer/image-viewer.type.js"
 
+import OneOfWidget from "./one-of-widget/one-of.type.js"
+import ManyOfWidget from "./many-of-widget/many-of.type.js"
+import TimerWidget from "./timer-widget/timer.type.js"
+
 
 export default {
 	'html-widget' : htmlWidget,
@@ -195,6 +199,10 @@ export default {
 	"file-viewer-widget": FileViewerWidget,
 	"image-viewer-widget": ImageViewerWidget,
 	
+	"one-of-widget": OneOfWidget,
+	"many-of-widget": ManyOfWidget,
+	"timer-widget": TimerWidget,	
+
 }	
 
 

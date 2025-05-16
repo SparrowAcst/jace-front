@@ -6,10 +6,19 @@
 		:disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 
 		:required="(options.data) ? getPropertyValue(options.data.required) : false"  
 		:clearable="(options.data) ? getPropertyValue(options.data.clearable) : false"
+		:multiple="(options.data) ? getPropertyValue(options.data.multiple) : false"
 		:color="(options.decoration) ? getPropertyValue(options.decoration.color) : ''"
 		:flat="(options.decoration) ? getPropertyValue(options.decoration.flat) : false"
 		:outlined="(options.decoration) ? getPropertyValue(options.decoration.outlined) : false"
 		:dense="(options.decoration) ? getPropertyValue(options.decoration.dense) : false"
+		
+		:counter="(options.decoration) ? getPropertyValue(options.decoration.counter) : false"
+
+		:chips="(options.decoration) ? getPropertyValue(options.decoration.chips) : false"
+		:small-chips="(options.decoration) ? getPropertyValue(options.decoration.smallChips) : false"
+		:truncate-length="(options.decoration) ? getPropertyValue(options.decoration.truncateLength) : 15"
+				
+
 		:hide-details="(options.decoration) ? getPropertyValue(options.decoration.hideDetails) : false"
 		:prepend-icon="(options.decoration) ? getPropertyValue(options.decoration.prependIcon) || '' : ''" 
 		:show-size= "(options.decoration) ? getPropertyValue(options.decoration.showSize) || false : false"
@@ -32,7 +41,7 @@ export default {
 	methods:{
 		fileChanged(file) {
 	      this.value = file
-	      this.$emit("change", this, this.value)
+	      this.$emit("select-files", this, this.value)
 	    }
 	},
 

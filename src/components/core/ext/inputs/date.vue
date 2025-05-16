@@ -10,14 +10,13 @@
 			dense
 			min-width="290px"
 		>
-        
-            <template v-slot:activator="{ on, attrs }">
+        	<template v-slot:activator="{ on, attrs }">
               	<v-text-field 
 	              	:value = "displayedValue"
 					:label="(options.data) ? getPropertyValue(options.data.label) : ''" 
 					:disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 
-					:readonly="true" 
 					
+					readonly 
 					:required="(options.data) ? getPropertyValue(options.data.required) : false"  
 					:clearable="(options.data) ? getPropertyValue(options.data.clearable) : false"
 					
@@ -31,13 +30,13 @@
 	              	prepend-icon="event" 
 	              	v-bind="attrs"
             		v-on="on"
-	        	
+            		@click:clear = "clearValue"
+            	
             	></v-text-field>
             </template>
             
             <v-date-picker 
-              v-model="value" 
-              @change="changeDateRange()"
+              v-model="valueModel" 
               :min="(options.data) ? getPropertyValue(options.data.min) : false"
               :max="(options.data) ? getPropertyValue(options.data.max) : false"
               no-title
@@ -51,38 +50,67 @@
 
 <script>
 
-import { isUndefined } from "lodash"
+import { isUndefined, isFunction } from "lodash"
 import moment from "moment"
+
 
 export default {
 	props:["options","getPropertyValue"],
 	
 	data: () => ({
 		menu:false,
-		value:""
+		value: null
 	}),
 
 	computed:{
-		displayedValue() {
-			// let res = (this.value) ? this.value.join(" ~ ") : null
-			// res = (res) ? res : null
-	      	return this.value
-		}	
+
+		valueModel: {
+			
+			get(){
+				return (this.value) ? moment(this.value).format("YYYY-MM-DD") : ""
+			},
+
+			set(value){
+				this.value = new Date(value)
+				this.changeDateRange()
+			}
+		},
+
+		displayedValue: {
+			
+			get(){
+				if(!this.value) return ""
+		      	return moment(this.value).format(this.getDateFormat())
+			}	
+		
+		}
+			
 	},
 
+
 	methods:{
+
+		getDateFormat(){
+			if(!this.options || !this.options.data || !this.options.data.format) return "DD MMM, YYYY"
+			return this.options.data.format
+		},
 		
-		changeDateRange(index){
+		changeDateRange(){
 	      this.menu = false
-	      // if( moment(this.value[0]).isAfter(moment(this.value[1])) ) this.value.reverse()
 	      this.$emit("change", this, this.value)
 	    },
+
+	    clearValue(){
+	      this.value = null
+	      this.changeDateRange()	
+	    }
 
 	},
 
 	
 	created(){
 		this.value = this.getPropertyValue(this.options.data.value) 
+		// console.log("DATE CREATED", this.options.data.value, this.getPropertyValue(this.options.data.value))
 	}
 }
 </script>

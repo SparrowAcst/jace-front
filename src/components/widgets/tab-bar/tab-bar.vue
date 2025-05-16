@@ -42,6 +42,7 @@
  -->      
         <div 
           class="d-flex align-center" 
+          :class="(item.class) ? 'd-flex align-center ' + (getPropertyValue(item.class) || '') : 'd-flex align-center'" 
           style="width:100%"
         >
           <v-icon v-if="item.icon" class="pr-1">
@@ -49,8 +50,12 @@
           </v-icon>
           <div>{{ getPropertyValue(item.title) }}</div>
           <div class="spacer"></div>
-          <div v-if="item.badge" :class="item.badge.decoration.class" :style="item.badge.decoration.style">
-            {{item.badge.content}}
+          <div 
+            v-if="item.badge" 
+            :class="(item.badge.decoration) ? getPropertyValue(item.badge.decoration.class) : ''" 
+            :style="(item.badge.decoration) ? getPropertyValue(item.badge.decoration.style) : ''"
+          >
+            {{getPropertyValue(item.badge.content)}}
           </div>  
         </div>
       

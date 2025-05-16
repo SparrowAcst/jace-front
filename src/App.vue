@@ -315,8 +315,8 @@ export default {
 
 
   mounted() {
-    this.setupI18n()
-    this.checkDps()
+    // this.setupI18n()
+    // this.checkDps()
   }
 
 

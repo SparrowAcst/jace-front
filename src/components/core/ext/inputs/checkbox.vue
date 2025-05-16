@@ -10,7 +10,8 @@
 			:input-value ="(options.data && options.data.value) ? getPropertyValue(options.data.value) : false"
 			
 			:disabled="(options.data) ? getPropertyValue(options.data.disabled) : false" 
-			
+			:readonly="(options.data) ? getPropertyValue(options.data.readonly) : false" 
+				
 			:color="(options.decoration) ? getPropertyValue(options.decoration.color) : ''"
 			:flat="(options.decoration) ? getPropertyValue(options.decoration.flat) : false"
 			:inset="(options.decoration) ? getPropertyValue(options.decoration.inset) : false"
